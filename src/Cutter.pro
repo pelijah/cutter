@@ -219,7 +219,9 @@ SOURCES += \
     widgets/CutterTreeView.cpp \
     widgets/ComboQuickFilterView.cpp \
     dialogs/HexdumpRangeDialog.cpp \
-    common/QtResImporter.cpp
+    common/QtResImporter.cpp \
+    plugins/CutterPythonPlugin.cpp \
+    common/PythonManager.cpp
 
 HEADERS  += \
     Cutter.h \
@@ -322,7 +324,9 @@ HEADERS  += \
     widgets/CutterTreeView.h \
     widgets/ComboQuickFilterView.h \
     dialogs/HexdumpRangeDialog.h \
-    common/QtResImporter.h
+    common/QtResImporter.h \
+    plugins/CutterPythonPlugin.h \
+    common/PythonManager.h
 
 FORMS    += \
     dialogs/AboutDialog.ui \
