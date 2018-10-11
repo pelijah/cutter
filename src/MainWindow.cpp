@@ -705,7 +705,7 @@ void MainWindow::resetToDefaultLayout()
 
     // Ugly workaround to set the default widths of functions docks
     // if anyone finds a way to do this cleaner that also works, feel free to change it!
-    auto restoreFunctionDock = qhelpers::forceWidth(functionsDock->widget(), 200);
+    auto restoreFunctionDock = qhelpers::forceWidth(functionsDock->getDockWidget()->widget(), 200);
     qApp->processEvents();
     restoreFunctionDock.restoreWidth(functionsDock->widget());
 
