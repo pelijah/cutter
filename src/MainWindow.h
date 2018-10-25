@@ -100,9 +100,6 @@ public:
     void addExtraWidget(QDockWidget *extraDock);
     void addExtraWidget(CutterDockWidget *extraDock);
 
-    void updateDockActionChecked(QAction * action);
-
-
 public slots:
     void finalizeOpen();
 
