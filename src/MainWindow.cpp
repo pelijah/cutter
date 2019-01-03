@@ -68,7 +68,6 @@
 #include "widgets/FlagsWidget.h"
 #include "widgets/VisualNavbar.h"
 #include "widgets/Dashboard.h"
-#include "widgets/Sidebar.h"
 #include "widgets/SdbDock.h"
 #include "widgets/Omnibar.h"
 #include "widgets/ConsoleWidget.h"
@@ -176,6 +175,7 @@ void MainWindow::initUI()
      */
     dockWidgets.reserve(20);
 
+#define DOCK(w, a) (new CutterDockWidget(this, w, a))
 
     // Add graph view as dockable
     graphDock =         DOCK(new GraphWidget(this), ui->actionGraph);
@@ -638,13 +638,13 @@ void MainWindow::hideAllDocks()
 void MainWindow::updateDockActionsChecked()
 {
     for (auto i = dockWidgetActions.constBegin(); i != dockWidgetActions.constEnd(); i++) {
-        i.key()->setChecked(!i.value()->isHidden());
+        i.key()->setChecked(!i.value()->getDockWidget()->isHidden());
     }
 }
 
 void MainWindow::showZenDocks()
 {
-    const QList<QDockWidget *> zenDocks = { functionsDock,
+    const QList<CutterDockWidget *> zenDocks = { functionsDock,
                                             dashboardDock,
                                             stringsDock,
                                             graphDock,
@@ -666,7 +666,7 @@ void MainWindow::showZenDocks()
 
 void MainWindow::showDebugDocks()
 {
-    const QList<QDockWidget *> debugDocks = { functionsDock,
+    const QList<CutterDockWidget *> debugDocks = { functionsDock,
                                               stringsDock,
                                               graphDock,
                                               disassemblyDock,
@@ -702,7 +702,7 @@ void MainWindow::resetToDefaultLayout()
     // if anyone finds a way to do this cleaner that also works, feel free to change it!
     auto restoreFunctionDock = qhelpers::forceWidth(functionsDock->getDockWidget()->widget(), 200);
     qApp->processEvents();
-    restoreFunctionDock.restoreWidth(functionsDock->widget());
+    restoreFunctionDock.restoreWidth(functionsDock->getDockWidget()->widget());
 
     core->setMemoryWidgetPriority(CutterCore::MemoryWidgetType::Disassembly);
 }
