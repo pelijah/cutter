@@ -9,6 +9,7 @@
 #include "plugins/CutterPythonPlugin.h"
 #include "PythonManager.h"
 #include "PythonAPI.h"
+#include "QtResImporter.h"
 
 static PythonManager *uniqueInstance = nullptr;
 
@@ -71,8 +72,11 @@ void PythonManager::initialize()
     }
 
     addApiModulesToInittab();
+    addQtResModuleToInittab();
     Py_Initialize();
     PyEval_InitThreads();
+
+    RegQtResImporter();
 
     saveThread();
 
@@ -102,6 +106,10 @@ void PythonManager::addPythonPath(char *path) {
 
 bool PythonManager::startJupyterNotebook()
 {
+	if (!cutterJupyterModule) {
+		return false;
+	}
+
     restoreThread();
 
     PyObject* startFunc = PyObject_GetAttrString(cutterJupyterModule, "start_jupyter");
@@ -131,43 +139,12 @@ QString PythonManager::getJupyterUrl()
     return urlWithTokenString;
 }
 
-PyObject* PythonManager::createModule(QString module)
+PyObject* PythonManager::createModule(const char *module)
 {
     PyObject *result = nullptr;
 
     restoreThread();
-    QFile moduleFile(":/python/" + module + ".pyc");
-    bool isBytecode = moduleFile.exists();
-    if (!isBytecode) {
-        moduleFile.setFileName(":/python/" + module + ".py");
-    }
-    moduleFile.open(QIODevice::ReadOnly);
-    QByteArray moduleCode = moduleFile.readAll();
-    moduleFile.close();
-
-    PyObject *moduleCodeObject;
-    if (isBytecode) {
-        moduleCodeObject = PyMarshal_ReadObjectFromString(moduleCode.constData() + 12,
-                                                          moduleCode.size() - 12);
-    } else {
-        moduleCodeObject = Py_CompileString(moduleCode.constData(), moduleFile.fileName().toLatin1().constData(),
-                                            Py_file_input);
-    }
-    if (!moduleCodeObject) {
-        PyErr_Print();
-        qWarning() << "Could not compile " + module + ".";
-        pyThreadState = PyEval_SaveThread();
-        return result;
-    }
-    result = PyImport_ExecCodeModule(module.toLatin1().constData(), moduleCodeObject);
-    if (!result) {
-        PyErr_Print();
-        qWarning() << "Could not import " + module + ".";
-        pyThreadState = PyEval_SaveThread();
-        return result;
-    }
-    Py_DECREF(moduleCodeObject);
-
+    result = QtResImport(module);
     saveThread();
 
     return result;

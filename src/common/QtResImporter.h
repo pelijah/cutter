@@ -3,7 +3,7 @@
 
 #ifdef CUTTER_ENABLE_JUPYTER
 
-PyObject *PyInit_qtres();
+void addQtResModuleToInittab();
 
 PyObject *QtResImport(const char *name);
 

@@ -12,7 +12,6 @@
 
 #include "JupyterConnection.h"
 #include "NestedIPyKernel.h"
-#include "QtResImporter.h"
 #include "PythonManager.h"
 
 Q_GLOBAL_STATIC(JupyterConnection, uniqueInstance)
@@ -44,7 +43,7 @@ void JupyterConnection::start()
 QString JupyterConnection::getUrl()
 {
     if (!notebookInstanceExists) {
-        return nullptr;
+        return QString("?");
     }
 
     QString url = Python()->getJupyterUrl();

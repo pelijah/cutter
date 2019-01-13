@@ -4,8 +4,6 @@
 
 #include "CutterConfig.h"
 
-#include <QFile>
-
 PyObject *api_version(PyObject *self, PyObject *null)
 {
     Q_UNUSED(self)

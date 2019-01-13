@@ -43,7 +43,7 @@ PyObject *QtResGetCode(const char *name)
                                                     data.size() - 12);
     } else {
         codeObject = Py_CompileString(data.constData(),
-                                      moduleFile.fileName().toLocal8Bit().constData(),
+                                      moduleFile.fileName().toUtf8().constData(),
                                       Py_file_input);
     }
     if (!codeObject) {
@@ -98,6 +98,11 @@ PyModuleDef QtResModule = {
 PyObject *PyInit_qtres()
 {
     return PyModule_Create(&QtResModule);
+}
+
+void addQtResModuleToInittab()
+{
+    PyImport_AppendInittab(QtResModule.m_name, &PyInit_qtres);
 }
 
 #endif // CUTTER_ENABLE_JUPYTER

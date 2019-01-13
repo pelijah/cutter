@@ -14,14 +14,16 @@ class CutterSamplePlugin(CutterPlugin):
 
         # Create dock widget and content widget
         dock_widget = QtWidgets.QDockWidget(self.main)
+        #del self.main
         dock_widget.setObjectName("FancyDockWidgetFromCoolPlugin")
         dock_widget.setWindowTitle("Test Widget")
         content = QtWidgets.QWidget()
-        dock_widget.setWidget(content)
+        content.setObjectName("pluginDockWidgetContent")
 
         # Create layout and label
-        layout = QtWidgets.QVBoxLayout(dock_widget)
-        content.setLayout(layout)
+        layout = QtWidgets.QVBoxLayout(content)
+        layout.setObjectName("layout")
+        #content.setLayout(layout)
         self.text = QtWidgets.QLabel(content)
         self.text.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         layout.addWidget(self.text)
@@ -33,6 +35,8 @@ class CutterSamplePlugin(CutterPlugin):
         button.setMaximumWidth(200)
         layout.addWidget(button)
         layout.setAlignment(button, Qt.AlignHCenter)
+
+        dock_widget.setWidget(content)
 
         QObject.connect(cutter_core, SIGNAL("seekChanged(RVA)"), self.on_seek_changed)
         QObject.connect(cutter_core, SIGNAL("refreshAll()"), self.on_refresh)

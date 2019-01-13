@@ -193,7 +193,6 @@ private:
     QList<CutterDockWidget *> dockWidgets;
     QMap<QAction *, CutterDockWidget *> dockWidgetActions;
     CutterDockWidget   *disassemblyDock = nullptr;
-    CutterDockWidget   *sidebarDock = nullptr;
     CutterDockWidget   *hexdumpDock = nullptr;
     CutterDockWidget   *pseudocodeDock = nullptr;
     CutterDockWidget   *graphDock = nullptr;

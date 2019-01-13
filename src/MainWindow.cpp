@@ -177,6 +177,11 @@ void MainWindow::initUI()
 
 #define DOCK(w, a) (new CutterDockWidget(this, w, a))
 
+    disassemblyDock =   DOCK(new DisassemblyWidget(this), ui->actionDisassembly);
+    hexdumpDock =       DOCK(new HexdumpWidget(this), ui->actionHexdump);
+    pseudocodeDock =    DOCK(new PseudocodeWidget(this), ui->actionPseudocode);
+    consoleDock = DOCK(new ConsoleWidget(this), ui->actionConsole);
+
     // Add graph view as dockable
     graphDock =         DOCK(new GraphWidget(this), ui->actionGraph);
 
@@ -580,7 +585,6 @@ void MainWindow::restoreDocks()
 
     // Function | Dashboard
     splitDockWidget(functionsDock, dashboardDock, Qt::Horizontal);
-    splitDockWidget(dashboardDock, sidebarDock, Qt::Horizontal);
 
     // In the lower half the console is the first widget
     addDockWidget(Qt::BottomDockWidgetArea, consoleDock);

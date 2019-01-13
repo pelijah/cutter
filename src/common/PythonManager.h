@@ -25,7 +25,7 @@ public:
     bool startJupyterNotebook();
     QString getJupyterUrl();
 
-    PyObject *createModule(QString module);
+    PyObject *createModule(const char *module);
     CutterPythonPlugin *loadPlugin(const char *pluginName);
 
     void restoreThread();
